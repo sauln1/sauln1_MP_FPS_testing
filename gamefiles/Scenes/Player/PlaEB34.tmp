@@ -1,0 +1,669 @@
+[gd_scene load_steps=28 format=3 uid="uid://bwggrf7sbmkcv"]
+
+[ext_resource type="Script" path="res://Scripts/Player/PlayerCharacterScript.gd" id="1_5dbx1"]
+[ext_resource type="Script" path="res://Scripts/Player/CameraScript.gd" id="2_x12n0"]
+[ext_resource type="Script" path="res://Scripts/Player/HUDScript.gd" id="3_l04tv"]
+[ext_resource type="Script" path="res://Scripts/Player/HUDRedimensionmentScript.gd" id="5_jgfg0"]
+[ext_resource type="Texture2D" uid="uid://dtntpkupwyjsj" path="res://Assets/Images/under.png" id="6_8ihnw"]
+[ext_resource type="Script" path="res://Scripts/Player/esc_menu.gd" id="6_j08gp"]
+[ext_resource type="Texture2D" uid="uid://cefkkogm1c07g" path="res://Assets/Images/healthprogress_outline.png" id="7_iimi0"]
+[ext_resource type="Texture2D" uid="uid://b7u1antcyxok7" path="res://Assets/Images/healthprogress.png" id="8_s4li5"]
+[ext_resource type="Texture2D" uid="uid://djck8csxjh46a" path="res://Assets/Images/detailedbackground.png" id="9_7bd0t"]
+[ext_resource type="Texture2D" uid="uid://o2lr2cf2brab" path="res://Assets/Images/armorprogress_outline.png" id="9_q7ija"]
+[ext_resource type="Texture2D" uid="uid://dy2eotoqvwwrs" path="res://Assets/Images/detailedhealthbar.png" id="10_4wlnm"]
+[ext_resource type="Texture2D" uid="uid://bqudxbnssofs" path="res://Assets/Images/reticle_armorbar_progress.png" id="10_j1yxs"]
+[ext_resource type="Texture2D" uid="uid://btvt4cjoe46x5" path="res://Assets/Images/detailedarmorbar.png" id="11_1afi0"]
+[ext_resource type="Shader" path="res://Assets/Shaders/SpeedLinesShader.gdshader" id="12_8u6b8"]
+[ext_resource type="Texture2D" uid="uid://d2lv1fualk6dp" path="res://Assets/Images/detailedabilitysquare.png" id="12_hlv78"]
+[ext_resource type="Texture2D" uid="uid://ctt47gkdtbo4n" path="res://Assets/Images/detailedhealthbar_outline.png" id="12_vr6ed"]
+[ext_resource type="Texture2D" uid="uid://bh5dkbukkcxd8" path="res://Assets/Images/weaponoutline.png" id="16_r0sya"]
+[ext_resource type="Script" path="res://Scripts/Player/respawn_menu.gd" id="17_7o5bg"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_5yjma"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_1gb5t"]
+height = 1.4
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_mfx44"]
+points = PackedVector3Array(1, 0.5, -0.5, 0.5, 0, 0.5, 0.5, 0, -0.5, 0, 0, 0, 1, 0.5, 0.5, 0.5, 0.75, 0)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_sksrq"]
+points = PackedVector3Array(0, 0, 0.5, 0, 0, -0.5, 1, 0, 0, 0, 0.3, 0, 0, -0.3, 0, 0, -0.3, 0.5, 0, -0.3, -0.5, 0, 0.3, 0.5, 0, 0.3, -0.5)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_6bkys"]
+albedo_color = Color(0.196078, 0.223529, 1, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_p2iaj"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_cdisy"]
+frequency = 0.15
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_78nux"]
+noise = SubResource("FastNoiseLite_cdisy")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fk5op"]
+shader = ExtResource("12_8u6b8")
+shader_parameter/line_color = Color(1, 1, 1, 1)
+shader_parameter/line_count = 2.0
+shader_parameter/line_density = 0.8
+shader_parameter/line_faloff = 1.0
+shader_parameter/mask_size = 0.1
+shader_parameter/mask_edge = 0.8
+shader_parameter/animation_speed = 20.0
+shader_parameter/noise = SubResource("NoiseTexture2D_78nux")
+
+[node name="PlayerCharacter" type="CharacterBody3D" groups=["PlayerCharacter"]]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0, 0)
+collision_layer = 2
+floor_block_on_wall = false
+floor_max_angle = 1.309
+floor_snap_length = 0.0
+platform_floor_layers = 4294901761
+script = ExtResource("1_5dbx1")
+maxSpeed = 50.0
+walkSpeed = 11.0
+runSpeed = 20.0
+crouchSpeed = 7.0
+slideSpeedAddon = 8.0
+dashSpeed = 120.0
+walkAcceleration = 10.0
+runAcceleration = 8.0
+crouchAcceleration = 6.0
+walkDecceleration = 10.0
+runDecceleration = 8.0
+crouchDecceleration = 6.0
+inAirMoveSpeed = 5.0
+hitGroundCooldown = 0.2
+jumpHeight = 3.0
+jumpTimeToPeak = 0.3
+jumpTimeToFall = 0.35
+jumpCooldown = 0.25
+fallDamageMultiplier = 1.3
+fallDurationTrigger = 1.5
+slideTime = 1.0
+timeBeforeCanSlideAgain = 0.5
+wallJumpVelocity = 3.0
+wallGravityMultiplier = 0.7
+
+[node name="standingHitbox" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_5yjma")
+
+[node name="crouchingHitbox" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.3, 0)
+shape = SubResource("CapsuleShape3D_1gb5t")
+disabled = true
+
+[node name="CameraHolder" type="Node3D" parent="."]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 0.715, 0)
+script = ExtResource("2_x12n0")
+XAxisSensibility = 0.008
+YAxisSensibility = 0.008
+maxUpAngleView = -90.0
+maxDownAngleView = 90.0
+crouchCameraDepth = -0.2
+crouchCameraLerpSpeed = 8.0
+slideCameraDepth = -0.5
+slideCameraLerpSpeed = 8.0
+baseFOV = 90.0
+crouchFOV = 75.0
+runFOV = 100.0
+slideFOV = 120.0
+dashFOV = 150.0
+fovChangeSpeed = 4.0
+fovChangeSpeedWhenDash = 3.0
+bobFrequency = 0.8
+bobAmplitude = 0.06
+camTiltRotationValue = 0.35
+camTiltRotationSpeed = 2.2
+mouseInputSpeed = 2.0
+
+[node name="Camera3D" type="Camera3D" parent="CameraHolder"]
+cull_mask = 1
+current = true
+fov = 100.0
+near = 0.01
+far = 1000.0
+
+[node name="HeadClamberCheck" type="ShapeCast3D" parent="CameraHolder/Camera3D"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 0, 0.0128162, 0)
+shape = SubResource("ConvexPolygonShape3D_mfx44")
+target_position = Vector3(-1, 0, 0)
+
+[node name="ChestClamberCheck" type="ShapeCast3D" parent="CameraHolder/Camera3D"]
+transform = Transform3D(-4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -3.47743e-09, -0.767978, 0.0795542)
+shape = SubResource("ConvexPolygonShape3D_sksrq")
+target_position = Vector3(-1, 0, 0)
+
+[node name="CeilingCheck" type="RayCast3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.758088, 0)
+visible = false
+exclude_parent = false
+target_position = Vector3(0, 4, 0)
+collide_with_areas = true
+debug_shape_custom_color = Color(1, 0, 0, 1)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+layers = 2
+material_override = SubResource("StandardMaterial3D_6bkys")
+mesh = SubResource("CapsuleMesh_p2iaj")
+
+[node name="Area3D" type="Area3D" parent="."]
+collision_layer = 2
+collision_mask = 4
+
+[node name="standingHitbox2" type="CollisionShape3D" parent="Area3D"]
+shape = SubResource("CapsuleShape3D_5yjma")
+
+[node name="HUD" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+mouse_filter = 1
+script = ExtResource("3_l04tv")
+metadata/_edit_use_anchors_ = true
+
+[node name="Reticle" type="CenterContainer" parent="HUD"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="TopLine" type="Line2D" parent="HUD/Reticle"]
+points = PackedVector2Array(0, -5, 0, -15)
+width = 2.0
+
+[node name="BottomLine" type="Line2D" parent="HUD/Reticle"]
+points = PackedVector2Array(0, 5, 0, 15)
+width = 2.0
+
+[node name="RightLine" type="Line2D" parent="HUD/Reticle"]
+points = PackedVector2Array(5, 0, 15, 0)
+width = 2.0
+
+[node name="LeftLine" type="Line2D" parent="HUD/Reticle"]
+points = PackedVector2Array(-5, 0, -15, 0)
+width = 2.0
+
+[node name="SpeedLinesContrainer" type="ColorRect" parent="HUD"]
+visible = false
+texture_filter = 1
+material = SubResource("ShaderMaterial_fk5op")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="HBoxContainer" type="HBoxContainer" parent="HUD"]
+layout_mode = 0
+offset_left = 7.0
+offset_right = 811.0
+offset_bottom = 350.0
+script = ExtResource("5_jgfg0")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HUD/HBoxContainer"]
+layout_mode = 2
+
+[node name="CurrentStateLabel" type="Label" parent="HUD/HBoxContainer/VBoxContainer"]
+texture_filter = 1
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "Current state : "
+
+[node name="MoveSpeedLabel" type="Label" parent="HUD/HBoxContainer/VBoxContainer"]
+texture_filter = 1
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "Move speed : "
+
+[node name="DesiredMoveSpeedLabel" type="Label" parent="HUD/HBoxContainer/VBoxContainer"]
+texture_filter = 1
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "Desired move speed : "
+
+[node name="VelocityLabel" type="Label" parent="HUD/HBoxContainer/VBoxContainer"]
+texture_filter = 1
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "Velocity : 
+"
+
+[node name="FramesPerSecondLabel" type="Label" parent="HUD/HBoxContainer/VBoxContainer"]
+texture_filter = 1
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "Frames per seconds : "
+
+[node name="NbJumpsInAirLabel" type="Label" parent="HUD/HBoxContainer/VBoxContainer"]
+texture_filter = 1
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "Number jumps allowed in air : "
+
+[node name="VBoxContainer2" type="VBoxContainer" parent="HUD/HBoxContainer"]
+layout_mode = 2
+
+[node name="CurrentStateLabelText" type="Label" parent="HUD/HBoxContainer/VBoxContainer2"]
+texture_filter = 1
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "..................."
+
+[node name="MoveSpeedLabelText" type="Label" parent="HUD/HBoxContainer/VBoxContainer2"]
+texture_filter = 1
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "..................."
+
+[node name="DesiredMoveSpeedLabelText" type="Label" parent="HUD/HBoxContainer/VBoxContainer2"]
+texture_filter = 1
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "..................."
+
+[node name="VelocityLabelText" type="Label" parent="HUD/HBoxContainer/VBoxContainer2"]
+texture_filter = 1
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "..................."
+
+[node name="FramesPerSecondLabelText" type="Label" parent="HUD/HBoxContainer/VBoxContainer2"]
+texture_filter = 1
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "..................."
+
+[node name="NbJumpsInAirLabelText" type="Label" parent="HUD/HBoxContainer/VBoxContainer2"]
+texture_filter = 1
+layout_mode = 2
+theme_override_font_sizes/font_size = 40
+text = "..................."
+
+[node name="PlayerStats" type="Control" parent="HUD"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="HealthBar_Reticle" type="Control" parent="HUD/PlayerStats"]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 1
+
+[node name="HealthProgressBar" type="TextureProgressBar" parent="HUD/PlayerStats/HealthBar_Reticle"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -82.0
+offset_top = -81.0
+offset_right = 248.0
+offset_bottom = 249.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.5, 0.5)
+value = 100.0
+fill_mode = 4
+radial_initial_angle = 189.0
+radial_fill_degrees = 221.0
+texture_under = ExtResource("6_8ihnw")
+texture_over = ExtResource("7_iimi0")
+texture_progress = ExtResource("8_s4li5")
+tint_under = Color(0, 0, 0, 0.156863)
+tint_over = Color(1, 1, 1, 0.196078)
+tint_progress = Color(1, 1, 1, 0.196078)
+
+[node name="ArmorProgressBar" type="TextureProgressBar" parent="HUD/PlayerStats/HealthBar_Reticle"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(50, 50)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = 1.0
+offset_top = -56.0
+offset_right = 331.0
+offset_bottom = 274.0
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.5, 0.5)
+value = 100.0
+fill_mode = 4
+radial_fill_degrees = 230.0
+texture_over = ExtResource("9_q7ija")
+texture_progress = ExtResource("10_j1yxs")
+tint_under = Color(0, 0, 0, 0.470588)
+tint_over = Color(1, 1, 1, 0.196078)
+tint_progress = Color(1, 1, 1, 0.196078)
+
+[node name="HealthBar_Detailed" type="Control" parent="HUD/PlayerStats"]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+grow_vertical = 0
+mouse_filter = 1
+
+[node name="DetailedBackground" type="Sprite2D" parent="HUD/PlayerStats/HealthBar_Detailed"]
+modulate = Color(1, 1, 1, 0.392157)
+position = Vector2(275, -72)
+scale = Vector2(0.75, 0.75)
+texture = ExtResource("9_7bd0t")
+
+[node name="MarginContainer" type="MarginContainer" parent="HUD/PlayerStats/HealthBar_Detailed/DetailedBackground"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -382.0
+offset_top = -110.5
+offset_right = -382.0
+offset_bottom = -110.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 5
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 15
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HUD/PlayerStats/HealthBar_Detailed/DetailedBackground/MarginContainer"]
+layout_mode = 2
+
+[node name="Line1HBoxContainer" type="HBoxContainer" parent="HUD/PlayerStats/HealthBar_Detailed/DetailedBackground/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="HealthEmblem" type="TextureRect" parent="HUD/PlayerStats/HealthBar_Detailed/DetailedBackground/MarginContainer/VBoxContainer/Line1HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+texture = ExtResource("12_hlv78")
+expand_mode = 2
+
+[node name="DetailedHealthBar" type="TextureProgressBar" parent="HUD/PlayerStats/HealthBar_Detailed/DetailedBackground/MarginContainer/VBoxContainer/Line1HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+value = 100.0
+texture_over = ExtResource("12_vr6ed")
+texture_progress = ExtResource("10_4wlnm")
+
+[node name="HealthCounter" type="Label" parent="HUD/PlayerStats/HealthBar_Detailed/DetailedBackground/MarginContainer/VBoxContainer/Line1HBoxContainer/DetailedHealthBar"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -31.0
+offset_top = -11.5
+offset_right = 31.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+text = "100/100"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Line2HBoxContainer" type="HBoxContainer" parent="HUD/PlayerStats/HealthBar_Detailed/DetailedBackground/MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="ArmorEmblem" type="TextureRect" parent="HUD/PlayerStats/HealthBar_Detailed/DetailedBackground/MarginContainer/VBoxContainer/Line2HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("12_hlv78")
+expand_mode = 2
+
+[node name="DetailedArmorBar" type="TextureProgressBar" parent="HUD/PlayerStats/HealthBar_Detailed/DetailedBackground/MarginContainer/VBoxContainer/Line2HBoxContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+value = 100.0
+texture_over = ExtResource("12_vr6ed")
+texture_progress = ExtResource("11_1afi0")
+
+[node name="ArmorCounter" type="Label" parent="HUD/PlayerStats/HealthBar_Detailed/DetailedBackground/MarginContainer/VBoxContainer/Line2HBoxContainer/DetailedArmorBar"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -31.0
+offset_top = -11.5
+offset_right = 31.0
+offset_bottom = 11.5
+grow_horizontal = 2
+grow_vertical = 2
+text = "100/100"
+
+[node name="SkillBar" type="HBoxContainer" parent="HUD/PlayerStats/HealthBar_Detailed/DetailedBackground/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Grenade" type="TextureRect" parent="HUD/PlayerStats/HealthBar_Detailed/DetailedBackground/MarginContainer/VBoxContainer/SkillBar"]
+layout_direction = 1
+layout_mode = 2
+texture = ExtResource("12_hlv78")
+
+[node name="Grenade Count" type="Label" parent="HUD/PlayerStats/HealthBar_Detailed/DetailedBackground/MarginContainer/VBoxContainer/SkillBar/Grenade"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -42.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_font_sizes/font_size = 30
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Skill2" type="TextureRect" parent="HUD/PlayerStats/HealthBar_Detailed/DetailedBackground/MarginContainer/VBoxContainer/SkillBar"]
+layout_direction = 1
+layout_mode = 2
+texture = ExtResource("12_hlv78")
+
+[node name="CooldownSkill2" type="Label" parent="HUD/PlayerStats/HealthBar_Detailed/DetailedBackground/MarginContainer/VBoxContainer/SkillBar/Skill2"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -34.5
+offset_right = 20.0
+offset_bottom = 34.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 50
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Skill3" type="TextureRect" parent="HUD/PlayerStats/HealthBar_Detailed/DetailedBackground/MarginContainer/VBoxContainer/SkillBar"]
+layout_direction = 1
+layout_mode = 2
+texture = ExtResource("12_hlv78")
+
+[node name="CooldownSkill3" type="Label" parent="HUD/PlayerStats/HealthBar_Detailed/DetailedBackground/MarginContainer/VBoxContainer/SkillBar/Skill3"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -34.5
+offset_right = 20.0
+offset_bottom = 34.5
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 50
+text = "0"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="VSeparator2" type="VSeparator" parent="HUD/PlayerStats/HealthBar_Detailed/DetailedBackground/MarginContainer/VBoxContainer/SkillBar"]
+layout_mode = 2
+
+[node name="WeaponOutline" type="TextureRect" parent="HUD/PlayerStats/HealthBar_Detailed/DetailedBackground/MarginContainer/VBoxContainer/SkillBar"]
+layout_direction = 1
+layout_mode = 2
+texture = ExtResource("16_r0sya")
+
+[node name="WeaponImage" type="TextureRect" parent="HUD/PlayerStats/HealthBar_Detailed/DetailedBackground/MarginContainer/VBoxContainer/SkillBar/WeaponOutline"]
+layout_direction = 1
+layout_mode = 2
+offset_left = 4.0
+offset_right = 4.0
+offset_bottom = 94.0
+texture = ExtResource("12_hlv78")
+expand_mode = 4
+stretch_mode = 1
+
+[node name="ReloadProgressBar" type="ProgressBar" parent="HUD/PlayerStats/HealthBar_Detailed/DetailedBackground/MarginContainer/VBoxContainer/SkillBar/WeaponOutline"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+fill_mode = 3
+show_percentage = false
+
+[node name="VSeparator" type="VSeparator" parent="HUD/PlayerStats/HealthBar_Detailed/DetailedBackground/MarginContainer/VBoxContainer/SkillBar"]
+layout_mode = 2
+
+[node name="AmmoCounter" type="Label" parent="HUD/PlayerStats/HealthBar_Detailed/DetailedBackground/MarginContainer/VBoxContainer/SkillBar"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 30
+text = "100/100"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="Timer" type="Timer" parent="."]
+
+[node name="RespawnMenu" type="Panel" parent="."]
+visible = false
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("17_7o5bg")
+
+[node name="Button" type="Button" parent="RespawnMenu"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -4.0
+offset_top = -4.0
+offset_right = 4.0
+offset_bottom = 4.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_font_sizes/font_size = 50
+text = "Respawn"
+
+[node name="EscMenu" type="Panel" parent="."]
+unique_name_in_owner = true
+visible = false
+self_modulate = Color(1, 1, 1, 0)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("6_j08gp")
+
+[node name="Panel" type="Panel" parent="EscMenu"]
+custom_minimum_size = Vector2(300, 500)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.422
+anchor_top = 0.269
+anchor_right = 0.578
+anchor_bottom = 0.731
+offset_left = -0.240051
+offset_top = -0.52002
+offset_right = 0.23999
+offset_bottom = 0.52002
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="EscMenu/Panel"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -48.0
+offset_top = -68.0
+offset_right = 48.0
+offset_bottom = 68.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Resume" type="Button" parent="EscMenu/Panel/VBoxContainer"]
+layout_mode = 2
+text = "Resume"
+
+[node name="MainMenu" type="Button" parent="EscMenu/Panel/VBoxContainer"]
+layout_mode = 2
+text = "Main Menu"
+
+[node name="Settings" type="Button" parent="EscMenu/Panel/VBoxContainer"]
+layout_mode = 2
+text = "Settings"
+
+[node name="Quit" type="Button" parent="EscMenu/Panel/VBoxContainer"]
+layout_mode = 2
+text = "Quit"
+
+[connection signal="pressed" from="RespawnMenu/Button" to="RespawnMenu" method="_on_button_pressed"]
+[connection signal="pressed" from="EscMenu/Panel/VBoxContainer/Resume" to="EscMenu" method="_on_resume_pressed"]
+[connection signal="pressed" from="EscMenu/Panel/VBoxContainer/MainMenu" to="EscMenu" method="_on_main_menu_pressed"]
+[connection signal="pressed" from="EscMenu/Panel/VBoxContainer/Settings" to="." method="_on_settings_pressed"]
+[connection signal="pressed" from="EscMenu/Panel/VBoxContainer/Quit" to="EscMenu" method="_on_quit_pressed"]

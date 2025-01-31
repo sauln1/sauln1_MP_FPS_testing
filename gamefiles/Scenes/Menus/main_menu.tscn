@@ -1,0 +1,219 @@
+[gd_scene load_steps=5 format=3 uid="uid://cnq7uj6iygnuy"]
+
+[ext_resource type="Script" path="res://Scripts/Menus/main_menu.gd" id="1_xxuwk"]
+[ext_resource type="Script" path="res://Scripts/Menus/host_menu.gd" id="2_868fm"]
+[ext_resource type="Script" path="res://Scripts/Menus/credits.gd" id="2_y1dkv"]
+[ext_resource type="Script" path="res://Scripts/Menus/connect_menu.gd" id="3_yqed3"]
+
+[node name="MainMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_xxuwk")
+
+[node name="mainMenu" type="VBoxContainer" parent="."]
+unique_name_in_owner = true
+z_index = 5
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.446
+anchor_top = 0.277
+anchor_right = 0.554
+anchor_bottom = 0.723
+offset_left = 0.679993
+offset_top = 80.84
+offset_right = -0.680054
+offset_bottom = -80.84
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="Training Map" type="Button" parent="mainMenu"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Training"
+
+[node name="Host Game" type="Button" parent="mainMenu"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Host"
+
+[node name="Join Game" type="Button" parent="mainMenu"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Join"
+
+[node name="Settings" type="Button" parent="mainMenu"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Settings"
+
+[node name="Credits" type="Button" parent="mainMenu"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Credits"
+
+[node name="Exit to Desktop" type="Button" parent="mainMenu"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 50
+text = "Quit"
+
+[node name="HostMenu" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(300, 350)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_868fm")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HostMenu"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="Port" type="Label" parent="HostMenu/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Port"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="PortEntry" type="LineEdit" parent="HostMenu/VBoxContainer"]
+layout_mode = 2
+placeholder_text = "8080"
+alignment = 1
+max_length = 10
+
+[node name="MapSelect" type="OptionButton" parent="HostMenu/VBoxContainer"]
+layout_mode = 2
+
+[node name="Start" type="Button" parent="HostMenu/VBoxContainer"]
+layout_mode = 2
+text = "Create Game"
+
+[node name="Cancel" type="Button" parent="HostMenu/VBoxContainer"]
+layout_mode = 2
+text = "Cancel"
+
+[node name="ConnectMenu" type="PanelContainer" parent="."]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(300, 350)
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_yqed3")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ConnectMenu"]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="IP" type="Label" parent="ConnectMenu/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Public IP"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="IPEntry" type="LineEdit" parent="ConnectMenu/VBoxContainer"]
+layout_mode = 2
+placeholder_text = "192.168.1.1"
+alignment = 1
+max_length = 14
+
+[node name="Port" type="Label" parent="ConnectMenu/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 30
+text = "Port"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="IPPortEntry" type="LineEdit" parent="ConnectMenu/VBoxContainer"]
+layout_mode = 2
+placeholder_text = "8080"
+alignment = 1
+max_length = 5
+
+[node name="Start" type="Button" parent="ConnectMenu/VBoxContainer"]
+layout_mode = 2
+text = "Connect"
+
+[node name="Cancel" type="Button" parent="ConnectMenu/VBoxContainer"]
+layout_mode = 2
+text = "Cancel"
+
+[node name="Credits" type="Control" parent="."]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("2_y1dkv")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Credits"]
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_top = -373.0
+offset_bottom = 373.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ScrollContainer" type="ScrollContainer" parent="Credits/VBoxContainer"]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(1000, 700)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+horizontal_scroll_mode = 0
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Credits/VBoxContainer/ScrollContainer"]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 6
+size_flags_vertical = 6
+alignment = 1
+
+[node name="Label" type="Label" parent="Credits/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_font_sizes/font_size = 30
+text = "Press Any Key"
+horizontal_alignment = 1
+
+[connection signal="pressed" from="mainMenu/Training Map" to="." method="_on_training_map_pressed"]
+[connection signal="pressed" from="mainMenu/Host Game" to="." method="_on_host_game_pressed"]
+[connection signal="pressed" from="mainMenu/Join Game" to="." method="_on_join_game_pressed"]
+[connection signal="pressed" from="mainMenu/Settings" to="." method="_on_settings_pressed"]
+[connection signal="pressed" from="mainMenu/Credits" to="." method="_on_credits_pressed"]
+[connection signal="pressed" from="mainMenu/Exit to Desktop" to="." method="_on_exit_to_desktop_pressed"]
+[connection signal="pressed" from="HostMenu/VBoxContainer/Start" to="HostMenu" method="_on_start_pressed"]
+[connection signal="pressed" from="HostMenu/VBoxContainer/Cancel" to="HostMenu" method="_on_cancel_pressed"]
+[connection signal="pressed" from="ConnectMenu/VBoxContainer/Start" to="ConnectMenu" method="_on_start_pressed"]
+[connection signal="pressed" from="ConnectMenu/VBoxContainer/Cancel" to="ConnectMenu" method="_on_cancel_pressed"]

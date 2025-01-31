@@ -1,0 +1,7 @@
+res://Scenes/Client/clientMain.tscn
+res://Scripts/Client/clientMain.gd
+res://Scripts/Player/PlayerCharacterScript.gd
+res://Scenes/Player/PlayerCharacterScene.tscn
+res://Scenes/Menus/main_menu.tscn
+res://Scenes/TestArena/TemplateMapScene.tscn
+res://Scripts/Map/TemplateMapScene.gd
